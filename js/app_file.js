@@ -157,10 +157,17 @@ function populateInfoWindow(marker, infowindow)
         url: url,
         dataType: "jsonp",
         success: function(response){
-          var venue_id = response.response.venues[0].id;
-          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + 
-          "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=" +
-          "LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
+          try 
+          {
+            var venue_id = response.response.venues[0].id;
+            var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + 
+            "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=" +
+            "LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
+          } 
+          catch (error) 
+          {
+            alert('Authentication Error! Check your 4Square client ID API.')
+          }
           //Requests informations from the 4Square Venue
           $.ajax({
             url: venue_url,
