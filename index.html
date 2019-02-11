@@ -10,11 +10,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
 integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
 crossorigin="anonymous"><link rel="stylesheet" type="text/css" href="css/style.css">
-
-<!-- JS and libs used -->
-<script src="js/libs/jquery.min.js"></script>
-<script src="js/libs/knockout-3.4.2.js"></script>
-<script src="js/app_file.js" defer="defer"></script>
 </head>
 
 <main>
@@ -33,9 +28,14 @@ crossorigin="anonymous"><link rel="stylesheet" type="text/css" href="css/style.c
     <section id="main"></section>
 </section>
 
-<script async defer
+<script onerror="onGoogleMapsError()" async defer
     src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAmHD0ZxDAzUWUews2cuMbiGjrKAwcfs5w&callback=initMap">
 </script>
  
+ <!-- JS and libs used -->
+<script src="js/libs/jquery.min.js"></script>
+<script src="js/libs/knockout-3.4.2.js"></script>
+<script src="js/app_file.js" defer="defer"></script>
+
 </main>
 </html> 

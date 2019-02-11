@@ -106,6 +106,12 @@ function gm_authFailure()
   alert('Error in auth process! Check you client ID.');
 }
 
+// onError function to throw some error during data loading - GoogleMaps API
+function onGoogleMapsError()
+{
+  alert('An error happened during Google Maps retrieve data.');
+}
+
 function showPlaces() {
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
@@ -156,33 +162,31 @@ function populateInfoWindow(marker, infowindow)
       $.ajax({
         url: url,
         dataType: "jsonp",
+        // Timeout to throw error in Ajax request failure
+        timeout: 4000,
         success: function(response){
-          try 
-          {
-            var venue_id = response.response.venues[0].id;
-            var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + 
+          var venue_id = response.response.venues[0].id;
+          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + 
             "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=" +
             "LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
-          } 
-          catch (error) 
-          {
-            alert('Authentication Error! Check your 4Square client ID API.')
-          }
+
           //Requests informations from the 4Square Venue
           $.ajax({
             url: venue_url,
             dataType: "jsonp",
+            // Timeout to throw error in Ajax request failure 
+            timeout: 4000,
             success: function(response){
               infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + 
               response.response.venue.description + '</p><br><b> by FourSquare </b>');
             },
             error: function(){
-              infowindow.setContent("Information cannot be loaded!");
+              infowindow.setContent("An error happened retrieving data! Information cannot be loaded!");
             }
           });
         },
         error: function(){
-          infowindow.setContent("Information cannot be loaded!");
+          infowindow.setContent("An error happened retrieving data! Information cannot be loaded!");
         }
       });
   
