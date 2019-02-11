@@ -1,10 +1,35 @@
+var map;
+// Create a new blank array for all the listing markers.
+var markers = [];
 
+var locations = ko.observableArray([
+    {
+      title: 'São Paulo',
+      location: {lat: -23.5505, lng: -46.6333},
+      show: ko.observable(true)
+    },
+    {
+      title: 'Rio de Janeiro',
+      location: {lat: -22.947204, lng: -43.203899},
+      show: ko.observable(true)
+    },
+    {
+      title: 'Brasilia',
+      location: {lat: -15.812004, lng: -47.88223018},
+      show: ko.observable(true)
+    },
+    {
+      title: 'Recife',
+      location: {lat: -8.062500, lng: -34.846039},
+      show: ko.observable(true)
+    }
+  ]);
 
 var initMap = function() {
 
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById('main'), {
-    center: {lat: -7.221367, lng: -35.888176},
+    center: {lat: 14.2350, lng: 51.9253},
     zoom: 13,
     mapTypeControl: false
   });
@@ -70,6 +95,115 @@ var initMap = function() {
   showPlaces();
 
 };
+
+function showPlaces() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+      bounds.extend(markers[i].position);
+    }
+    map.fitBounds(bounds);
+  }
+
+  var viewModel = function() {
+    self = this;
+    self.query = ko.observable("");
+  
+    this.listClick = function() {
+      for(var i=0; i < markers.length; i++) {
+        if (markers[i]['title'] == this.title) {
+          google.maps.event.trigger(markers[i], 'click');
+          return;
+        }
+      }
+    };
+  
+    this.filterButton = function() {
+      console.log(self.query());
+      var q = self.query().toLowerCase();
+  
+      for(var i=0; i < locations().length; i++){
+        if(locations()[i].title.toLowerCase().indexOf(q) >= 0) {
+          locations()[i].show(true);
+          markers[i].setVisible(true);
+        } else {
+          locations()[i].show(false);
+          markers[i].setVisible(false);
+        }
+      }
+    };
+  }
+
+  // This function populates the infowindow when the marker is clicked. We'll only allow
+// one infowindow which will open at the marker that is clicked, and populate based
+// on that markers position.
+function populateInfoWindow(marker, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      // get4Square(marker.position.lat(), marker.position.lng());
+  
+      var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + "," + marker.position.lng() + "&client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20180323";
+  
+      // Get VENUE_ID of selected place
+      $.ajax({
+        url: url,
+        dataType: "jsonp",
+        success: function(response){
+          var venue_id = response.response.venues[0].id;
+          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20180323";
+          //new request to get details from the 4Square Venue
+          $.ajax({
+            url: venue_url,
+            dataType: "jsonp",
+            success: function(response){
+              infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p><br><b> by FourSquare </b>');
+            },
+            error: function(){
+              infowindow.setContent("Nao foi possivel carregar a informacao");
+            }
+          });
+        },
+        error: function(){
+          infowindow.setContent("Nao foi possivel carregar a informacao");
+        }
+      });
+  
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick', function() {
+        marker.clicked = false;
+        marker.setIcon(makeMarkerIcon('0091ff'));
+        infowindow.marker = null;
+      });
+      infowindow.open(map, marker);
+    }
+  }
+  
+  // This function will loop through the markers array and display them all.
+  function showPlaces() {
+    var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+      bounds.extend(markers[i].position);
+    }
+    map.fitBounds(bounds);
+  }
+  
+  // This function takes in a COLOR, and then creates a new marker
+  // icon of that color. The icon will be 21 px wide by 34 high, have an origin
+  // of 0, 0 and be anchored at 10, 34).
+  function makeMarkerIcon(markerColor) {
+    var markerImage = new google.maps.MarkerImage(
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      '|40|_|%E2%80%A2',
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(21,34));
+    return markerImage;
+  }
 
 
 ko.applyBindings(new viewModel());
