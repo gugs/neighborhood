@@ -92,15 +92,7 @@ var initMap = function() {
     });
   }
 
-  //resize function add bounds to fit the markers
-  google.maps.event.addDomListener(window, "resize", function() {
-    var bound = new google.maps.LatLngBounds();
-    for(var i in $scope.markers)
-    {
-       bound.extend($scope.markers[i].getPosition());
-    }
-    $scope.map.fitBounds(bound);
-  });
+
 
   showPlaces();
 
@@ -119,27 +111,24 @@ function showPlaces() {
   var viewModel = function() {
     self = this;
     self.query = ko.observable("");
+    this.query.subscribe(function(newValue){
+        newValue = newValue.toLowerCase();
+        for(var i=0; i < locations().length; i++){
+            if(locations()[i].title.toLowerCase().indexOf(newValue) >= 0) {
+              locations()[i].show(true);
+              markers[i].setVisible(true);
+            } else {
+              locations()[i].show(false);
+              markers[i].setVisible(false);
+            }
+          }
+    }, this);
   
     this.listClick = function() {
       for(var i=0; i < markers.length; i++) {
         if (markers[i]['title'] == this.title) {
           google.maps.event.trigger(markers[i], 'click');
           return;
-        }
-      }
-    };
-  
-    this.filterButton = function() {
-      console.log(self.query());
-      var q = self.query().toLowerCase();
-  
-      for(var i=0; i < locations().length; i++){
-        if(locations()[i].title.toLowerCase().indexOf(q) >= 0) {
-          locations()[i].show(true);
-          markers[i].setVisible(true);
-        } else {
-          locations()[i].show(false);
-          markers[i].setVisible(false);
         }
       }
     };
