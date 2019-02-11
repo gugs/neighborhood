@@ -106,12 +106,6 @@ function gm_authFailure()
   alert('Error in auth process! Check you client ID.');
 }
 
-// onError function to throw some error during data loading - GoogleMaps API
-function onGoogleMapsError()
-{
-  alert('An error happened during Google Maps retrieve data.');
-}
-
 function showPlaces() {
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
