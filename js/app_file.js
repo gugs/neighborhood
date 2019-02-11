@@ -135,7 +135,7 @@ function showPlaces() {
     };
   }
 
-  // This function populates the infowindow when the marker is clicked. We'll only allow
+// This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
@@ -144,7 +144,7 @@ function populateInfoWindow(marker, infowindow) {
       infowindow.marker = marker;
       // get4Square(marker.position.lat(), marker.position.lng());
   
-      var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + "," + marker.position.lng() + "&client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20180323";
+      var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + "," + marker.position.lng() + "&client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
   
       // Get VENUE_ID of selected place
       $.ajax({
@@ -152,7 +152,7 @@ function populateInfoWindow(marker, infowindow) {
         dataType: "jsonp",
         success: function(response){
           var venue_id = response.response.venues[0].id;
-          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20180323";
+          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
           //new request to get details from the 4Square Venue
           $.ajax({
             url: venue_url,

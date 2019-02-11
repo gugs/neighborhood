@@ -5,6 +5,7 @@ body {
 .sidenav {
   height: 100%;
   width: 361px;
+  padding: 10px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -26,6 +27,10 @@ body {
   color: #f1f1f1;
 }
 
+.sidenav span {
+  color: white;
+}
+
 #main {
   bottom:0px;
   height: 100%;
@@ -37,4 +42,25 @@ body {
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+@media screen and (max-width: 410px)
+{
+  .sidenav
+  {
+    display: inline-flex;
+    height: 200px;
+  }
+
+  #main
+  {
+    display: inline-flex;
+    height: 100%;
+    left: 362px;
+    right: 0px;
+  }
+
+  .container{
+    display: flex;
+  }
 }
