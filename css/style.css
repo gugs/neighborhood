@@ -39,7 +39,7 @@ body {
   right: 0px;
 }
 
-@media screen and (max-height: 450px) {
+@media screen and (max-height: 410px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
@@ -48,19 +48,21 @@ body {
 {
   .sidenav
   {
-    display: inline-flex;
+    display: inline-block;
     height: 200px;
+    width: 100%;
   }
 
   #main
   {
-    display: inline-flex;
+    display: inline-block;
     height: 100%;
-    left: 362px;
+    top: 200px;
+    left: 0px;
     right: 0px;
   }
 
   .container{
-    display: flex;
+    display: block;
   }
 }

@@ -92,6 +92,16 @@ var initMap = function() {
     });
   }
 
+  //resize function add bounds to fit the markers
+  google.maps.event.addDomListener(window, "resize", function() {
+    var bound = new google.maps.LatLngBounds();
+    for(var i in $scope.markers)
+    {
+       bound.extend($scope.markers[i].getPosition());
+    }
+    $scope.map.fitBounds(bound);
+  });
+
   showPlaces();
 
 };
