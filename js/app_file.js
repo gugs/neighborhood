@@ -32,7 +32,8 @@ var locations = ko.observableArray([
     }
   ]);
 
-var initMap = function() {
+var initMap = function() 
+{
 
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById('main'), {
@@ -98,6 +99,12 @@ var initMap = function() {
   showPlaces();
 
 };
+
+// Handle exception concern Google's API 
+function gm_authFailure()
+{
+  alert('Error in auth process! Check you client ID.');
+}
 
 function showPlaces() {
     var bounds = new google.maps.LatLngBounds();
