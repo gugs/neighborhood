@@ -1,7 +1,9 @@
 var map;
-// Create a new blank array for all the listing markers.
+
+// Empty markers list
 var markers = [];
 
+// Set of markers with some parameters like: title and location(lat/lng)
 var locations = ko.observableArray([
     {
       title: 'Brennand Institute',
@@ -36,19 +38,16 @@ var initMap = function() {
 
   this.largeInfowindow = new google.maps.InfoWindow({maxWidth: 150});
 
-  // Style the markers a bit. This will be our marker icon.
+  // Markers style - Default Icon, Highlighted and Clicked
   var defaultIcon = makeMarkerIcon('0091ff');
-  // Create a "highlighted location" marker color for when the user
-  // mouses over the marker.
   var highlightedIcon = makeMarkerIcon('FF0000');
-  //Style the marker when clicked
   var clickedIcon = makeMarkerIcon('FFE500');
-  // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < locations().length; i++) {
-    // Get the position from the location array.
+
+  // Set places in the markers from location list
+  for (var i = 0; i < locations().length; i++) 
+  {
     var position = locations()[i].location;
     var title = locations()[i].title;
-    // Create a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
       position: position,
       title: title,
@@ -68,9 +67,8 @@ var initMap = function() {
       });
     }
 
-    // Push the marker to our array of markers.
+    // Set location and add listener event to the markers
     markers.push(marker);
-    // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
       map.setCenter(this.getPosition());
       resetMarkers();
@@ -91,8 +89,6 @@ var initMap = function() {
       }
     });
   }
-
-
 
   showPlaces();
 
@@ -134,16 +130,15 @@ function showPlaces() {
     };
   }
 
-// This function populates the infowindow when the marker is clicked. We'll only allow
-// one infowindow which will open at the marker that is clicked, and populate based
-// on that markers position.
-function populateInfoWindow(marker, infowindow) {
-    // Check to make sure the infowindow is not already opened on this marker.
-    if (infowindow.marker != marker) {
+// Populate infoWindow with foursquare location's description acquired
+function populateInfoWindow(marker, infowindow) 
+{
+    if (infowindow.marker != marker) 
+    {
       infowindow.marker = marker;
-      // get4Square(marker.position.lat(), marker.position.lng());
-  
-      var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + "," + marker.position.lng() + "&client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
+      var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + 
+      "," + marker.position.lng() + "&client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR" +
+      "3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
   
       // Get VENUE_ID of selected place
       $.ajax({
@@ -151,25 +146,27 @@ function populateInfoWindow(marker, infowindow) {
         dataType: "jsonp",
         success: function(response){
           var venue_id = response.response.venues[0].id;
-          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
-          //new request to get details from the 4Square Venue
+          var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + 
+          "?client_id=G1ZA0AFLPJYQFVCGOO33DZ5CBMGHF34R24LW4LJJHOR3RJW5&client_secret=" +
+          "LB353RXSJ20CZJFYPTBWAIPMYWUKBHMACMRYHIUVIXNJDZAN&v=20190210";
+          //Requests informations from the 4Square Venue
           $.ajax({
             url: venue_url,
             dataType: "jsonp",
             success: function(response){
-              infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p><br><b> by FourSquare </b>');
+              infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + 
+              response.response.venue.description + '</p><br><b> by FourSquare </b>');
             },
             error: function(){
-              infowindow.setContent("Nao foi possivel carregar a informacao");
+              infowindow.setContent("Information cannot be loaded!");
             }
           });
         },
         error: function(){
-          infowindow.setContent("Nao foi possivel carregar a informacao");
+          infowindow.setContent("Information cannot be loaded!");
         }
       });
   
-      // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
         marker.clicked = false;
         marker.setIcon(makeMarkerIcon('0091ff'));
@@ -179,10 +176,9 @@ function populateInfoWindow(marker, infowindow) {
     }
   }
   
-  // This function will loop through the markers array and display them all.
+  // Places markers to display in the map
   function showPlaces() {
     var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map);
       bounds.extend(markers[i].position);
@@ -190,9 +186,7 @@ function populateInfoWindow(marker, infowindow) {
     map.fitBounds(bounds);
   }
   
-  // This function takes in a COLOR, and then creates a new marker
-  // icon of that color. The icon will be 21 px wide by 34 high, have an origin
-  // of 0, 0 and be anchored at 10, 34).
+  // Adjust marker's style
   function makeMarkerIcon(markerColor) {
     var markerImage = new google.maps.MarkerImage(
       'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
@@ -203,6 +197,5 @@ function populateInfoWindow(marker, infowindow) {
       new google.maps.Size(21,34));
     return markerImage;
   }
-
 
 ko.applyBindings(new viewModel());

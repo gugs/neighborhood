@@ -1,33 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<!-- Head -->
 <head>
+<title>Neighborhood Project</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+crossorigin="anonymous"><link rel="stylesheet" type="text/css" href="css/style.css">
+
+<!-- JS and libs used -->
 <script type="text/javascript" src="js/libs/jquery.min.js"></script>
 <script type="text/javascript" src="js/libs/knockout-3.4.2.js"></script>
 <script type="text/javascript" src="js/app_file.js" defer="defer"></script>
 </head>
+
 <body>
-
 <div class="container">
-<div class="sidenav">
-    <input  class="form-control" type="text" data-bind="textInput: query" name="filter" placeholder="Type filter"></input> 
-    <hr>
-    <div data-bind="foreach: locations.sort(function (left, right) { return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1) })">
-        <p>
-            <span class="btn btn-info btn-block" data-bind="text: title, visible: show, click: $parent.listClick"></span>
-        </p>
+    <div class="sidenav">
+        <input  class="form-control" type="text" data-bind="textInput: query" 
+        name="filter" placeholder="Type filter"></input>
+        <br> 
+        <div data-bind="foreach: locations.sort(function (left, right) 
+        { return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1) })">
+            <p>
+                <span class="btn btn-info btn-block" 
+                data-bind="text: title, visible: show, click: $parent.listClick"></span>
+            </p>
+        </div>
     </div>
-</div>
 
-<div id="main"></div>
-
+    <div id="main"></div>
 </div>
 
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAmHD0ZxDAzUWUews2cuMbiGjrKAwcfs5w&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,
+    drawing&key=AIzaSyAmHD0ZxDAzUWUews2cuMbiGjrKAwcfs5w&callback=initMap">
 </script>
  
 </body>
