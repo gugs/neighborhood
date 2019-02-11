@@ -4,23 +4,23 @@ var markers = [];
 
 var locations = ko.observableArray([
     {
-      title: 'São Paulo',
-      location: {lat: -23.5505, lng: -46.6333},
+      title: 'Brennand Institute',
+      location: {lat: -8.064923447876673, lng: -34.96304512023926},
       show: ko.observable(true)
     },
     {
-      title: 'Rio de Janeiro',
+      title: 'Cristo Redentor',
       location: {lat: -22.947204, lng: -43.203899},
       show: ko.observable(true)
     },
     {
-      title: 'Brasilia',
-      location: {lat: -15.812004, lng: -47.88223018},
+      title: 'Palácio do Planalto',
+      location: {lat: -15.799007, lng: -47.861966},
       show: ko.observable(true)
     },
     {
-      title: 'Recife',
-      location: {lat: -8.062500, lng: -34.846039},
+      title: 'Farol do Cabo Branco',
+      location: {lat: -7.148667070076936, lng: -34.797393681696775},
       show: ko.observable(true)
     }
   ]);
