@@ -24,6 +24,11 @@ var locations = ko.observableArray([
       title: 'Farol do Cabo Branco',
       location: {lat: -7.148667070076936, lng: -34.797393681696775},
       show: ko.observable(true)
+    },
+    {
+      title: 'Museu de Arte Popular da Paraíba',
+      location: {lat: -7.223999317879056, lng: -35.87894640162092},
+      show: ko.observable(true)
     }
   ]);
 
