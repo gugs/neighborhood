@@ -49,15 +49,14 @@ body {
   .sidenav
   {
     display: inline-block;
-    height: 200px;
+    height: 40vh;
     width: 100%;
   }
 
   #main
   {
     display: inline-block;
-    height: 100%;
-    top: 200px;
+    height: 60vh;
     left: 0px;
     right: 0px;
   }
